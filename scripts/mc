@@ -1,10 +1,10 @@
 #!/bin/bash
 # ==========================================
-# Minecraft 分布式模块化运维助手 4.0
+# Minecraft 分布式模块化运维助手 4.0 (纯净无后缀版)
 # 主入口文件: scripts/mc
 # ==========================================
 
-# 1. 全局配置 (通过 export 让所有子脚本都能读取)
+# 1. 全局配置 (通过 export 共享给所有子模块)
 export CONTAINER_NAME="mcserver"
 export SCRIPT_URL="https://raw.githubusercontent.com/yunfeibuzai/xiaomaimai/main/scripts/mc"
 export MODULE_BASE="https://raw.githubusercontent.com/yunfeibuzai/xiaomaimai/main/scripts/modules"
@@ -17,7 +17,7 @@ export BLUE='\033[0;34m'
 export CYAN='\033[0;36m'
 export NC='\033[0m'
 
-# 3. 动态获取状态
+# 3. 动态状态检测
 function check_status() {
     if [ "$(docker ps -q -f name=$CONTAINER_NAME)" ]; then
         STATUS="${GREEN}[运行中 / Online]${NC}"
@@ -28,7 +28,7 @@ function check_status() {
     fi
 }
 
-# 4. 显示UI菜单
+# 4. 显示菜单
 function show_menu() {
     clear
     check_status
@@ -58,30 +58,28 @@ function show_menu() {
     echo -e "${CYAN}=======================================${NC}"
 }
 
-# 5. 核心路由器 (动态拉取并执行远程模块)
+# 5. 核心路由器 (拉取 GitHub 上的无后缀子脚本)
 function run_module() {
     local mod_name=$1
-    # 下载远程脚本到本地缓存，以完美支持 TTY 交互与输入流
-    curl -sSL "${MODULE_BASE}/${mod_name}.sh" -o "/tmp/mc_mod_${mod_name}.sh"
-    chmod +x "/tmp/mc_mod_${mod_name}.sh"
-    # 执行该模块
-    "/tmp/mc_mod_${mod_name}.sh"
+    curl -sSL "${MODULE_BASE}/${mod_name}" -o "/tmp/mc_mod_${mod_name}"
+    chmod +x "/tmp/mc_mod_${mod_name}"
+    "/tmp/mc_mod_${mod_name}"
 }
 
 # 6. 自我更新功能
 function update_script() {
-    echo -e "${YELLOW}⏳ 正在拉取最新主控脚本...${NC}"
+    echo -e "${YELLOW}⏳ 正在从 GitHub 获取最新主控脚本...${NC}"
     if curl -sSL "$SCRIPT_URL" -o /usr/local/bin/mc; then
         chmod +x /usr/local/bin/mc
         echo -e "${GREEN}✅ 主控菜单更新成功！${NC}"
         sleep 1
         exec /usr/local/bin/mc
     else
-        echo -e "${RED}⚠️ 更新失败！请检查网络。${NC}"
+        echo -e "${RED}⚠️ 更新失败！请检查网络或 GitHub 仓库地址。${NC}"
     fi
 }
 
-# 7. 循环监听输入
+# 7. 循环监听
 while true; do
     show_menu
     read -p "🎯 请输入序号执行操作: " num
