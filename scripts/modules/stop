@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -e "${YELLOW}⏳ 正在安全保存世界并关闭服务器...${NC}"
+docker stop "$CONTAINER_NAME"
+echo -e "${GREEN}✅ 服务器已成功停止。${NC}"
