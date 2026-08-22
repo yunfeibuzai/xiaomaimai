@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -e "${CYAN}👉 正在监控资源占用，按 Ctrl + C 退出监控${NC}"
+sleep 1
+docker stats "$CONTAINER_NAME"
