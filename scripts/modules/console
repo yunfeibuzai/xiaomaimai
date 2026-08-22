@@ -1,0 +1,5 @@
+#!/bin/bash
+echo -e "${CYAN}👉 即将进入游戏后台交互模式。${NC}"
+echo -e "${YELLOW}⚠️  提示: 输入 exit 或按 Ctrl+C 退出此模式，且【不会】导致服务器关机。${NC}"
+sleep 2
+docker exec -it "$CONTAINER_NAME" rcon-cli
