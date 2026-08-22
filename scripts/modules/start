@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -e "${YELLOW}⏳ 正在启动服务器...${NC}"
+docker start "$CONTAINER_NAME"
+echo -e "${GREEN}✅ 启动命令已发送！请使用选项 4 查看开服进度。${NC}"
