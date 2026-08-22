@@ -1,0 +1,18 @@
+#!/bin/bash
+echo -e "${CYAN}🧩 交互式下载并安装模组${NC}"
+read -p "👉 请输入你要保存的模组文件名 (例如 jei-1.20.1.jar): " mod_name
+if [ -z "$mod_name" ]; then echo -e "${RED}⚠️ 文件名不能为空！${NC}"; exit 1; fi
+
+if [[ "$mod_name" != *.jar ]]; then mod_name="${mod_name}.jar"; fi
+
+read -p "👉 请输入直链下载地址: " mod_url
+if [ -z "$mod_url" ]; then echo -e "${RED}⚠️ 链接不能为空！${NC}"; exit 1; fi
+
+echo -e "${YELLOW}⏳ 正在极速下载 ${mod_name} 到服务器，请稍候...${NC}"
+docker exec -i "$CONTAINER_NAME" sh -c "mkdir -p /data/mods && wget -q -O '/data/mods/$mod_name' '$mod_url'"
+if docker exec -i "$CONTAINER_NAME" test -s "/data/mods/$mod_name"; then
+    echo -e "${GREEN}✅ 模组 ${mod_name} 成功下载并部署！${NC}"
+else
+    echo -e "${RED}⚠️ 下载失败，请检查链接。${NC}"
+    docker exec -i "$CONTAINER_NAME" rm -f "/data/mods/$mod_name" 2>/dev/null
+fi
