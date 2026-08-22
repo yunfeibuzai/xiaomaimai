@@ -1,0 +1,9 @@
+#!/bin/bash
+echo -e "${YELLOW}💡 提示: 给自己管理权限请输入 op 你的ID${NC}"
+read -p "👉 请输入完整指令: " cmd
+if [ -n "$cmd" ]; then
+    docker exec -i "$CONTAINER_NAME" rcon-cli $cmd
+    echo -e "${GREEN}✅ 指令已送达！${NC}"
+else
+    echo -e "${RED}⚠️ 指令不能为空${NC}"
+fi
