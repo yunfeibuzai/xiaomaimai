@@ -1,0 +1,5 @@
+#!/bin/bash
+echo -e "${CYAN}👉 正在输出日志，按 Ctrl + C 退出日志查看${NC}"
+sleep 1
+docker logs -f "$CONTAINER_NAME"
+
