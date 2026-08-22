@@ -1,0 +1,7 @@
+#!/bin/bash
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_FILE="mc_world_backup_$DATE.tar.gz"
+echo -e "${YELLOW}⏳ 正在压缩打包世界数据，请稍候...${NC}"
+docker exec -i "$CONTAINER_NAME" tar -czf - /data/world > "$BACKUP_FILE"
+echo -e "${GREEN}✅ 备份大功告成！${NC}"
+echo -e "📂 存档文件已保存在当前目录: ${BLUE}$BACKUP_FILE${NC}"
