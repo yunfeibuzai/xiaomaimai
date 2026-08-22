@@ -1,0 +1,4 @@
+#!/bin/bash
+echo -e "${YELLOW}⏳ 正在重启...${NC}"
+docker restart "$CONTAINER_NAME"
+echo -e "${GREEN}✅ 重启成功！${NC}"
